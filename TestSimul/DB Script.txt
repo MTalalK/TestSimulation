@@ -1,0 +1,155 @@
+﻿Create table Questions(
+Question_ID int primary key identity,
+Question_Statement varchar(max)
+)
+
+Create table Options(
+Option_ID int primary key identity,
+Associated_QID int foreign key references Questions(Question_ID),
+Option_Text varchar(max)
+)
+
+truncate table Options
+
+Insert into Questions (Question_Statement)
+values('What is the estimated age of the universe?'),
+('Which animal among these lives the longest?'),
+('When is the longest day of the year?'),
+('Which planet has the biggest moon?')
+Insert into Questions (Question_Statement)
+VALUES('Which country among these has the least amount of known war heads?'),
+('Which country''s cricket team has won the most number of t20 World Cups?'),
+('Which football team among these has not won a FIFA worldcup?'),
+('Who has the most number of gold medals in the history of olympics?')
+Insert into Questions (Question_Statement)
+VALUES ('Which country has the most amount of rainfall among these?')
+
+
+Insert into Options(Associated_QID, Option_Text)
+values(1, '2.77 billion years'),
+(1, '514.77 million years'),
+(1, '13.77 billion years'),
+(2, 'Crocodile'),
+(2, 'Giraffe'),
+(2, 'Alligator'),
+(3, '20th of June'),
+(3, '23rd of July'),
+(3, '11th of June'),
+(4, 'Saturn'),
+(4, 'Jupiter'),
+(4, 'Uranus')
+Insert into Options(Associated_QID, Option_Text)
+values(5, 'Israel'),
+(5, 'India'),
+(5, 'France'),
+(6, 'West Indies'),
+(6, 'Srilanka'),
+(6, 'Australia'),
+(7, 'Argentina'),
+(7, 'Netherlands'),
+(7, 'Mexico'),
+(8, 'Carl Lewis'),
+(8, 'Michael Phelps'),
+(8, 'Usain Bolt')
+
+
+truncate table options
+-- Sp for storing answers
+alter proc spStoreResponses
+@QuestionID int,
+@Option varchar(50),
+@Candidate_ID int
+as
+Begin
+	If not exists (Select 1 from Responses)
+	Begin
+		Set @Candidate_ID = 1
+	End
+	Else if (Select Count(*) from Responses Where Candidate_ID = (Select max(Candidate_ID) from Responses)) <= (Select count(*) from Options where Associated_QID = @QuestionID) 
+	Begin
+		Set @Candidate_ID = (Select max(Candidate_ID) from Responses)
+	End
+	Else
+	Begin
+		Set @Candidate_ID = (Select max(Candidate_ID) from Responses) + 1
+	End
+	Insert into Responses values(@Candidate_ID, (Select QuestionID from Test where TestQID = @QuestionID), @Option, (Select Score from (Select ROW_NUMBER() over(order by Associated_QID) as p, case when (Select Option_Text from Options Where CorrectAnswer = 'Correct' and Associated_QID = (Select QuestionID from Test where TestQID = @QuestionID)) = @Option then 5 else 0 End as Score from Options) a where p = 1))
+END
+
+
+Select * from Options
+Truncate table Responses
+
+Drop proc spStoreResponses
+
+--Responses storing table
+--Create table Responses
+--(
+--	Candidate_ID int,
+--	QuestionID int,
+--	Question_Response varchar(50),
+--	Marks int
+--)
+
+truncate table Responses
+
+--SP for getting Questions and Options
+Alter proc spGetQuestionandOptions
+@ID int
+as
+Begin
+	Select Question_Statement, TotalQ = (Select Count(Question_Statement) from Test), B.Option_Text from Test A inner join Options B on QuestionID = B.Associated_QID where A.TestQID = @ID
+END
+
+Update Options set CorrectAnswer = Case when Option_ID in (3, 4, 7, 11, 13, 16, 20, 23)   then 'Correct' else 'Incorrect' End
+
+Select * from Questions
+Select * from Options
+Select * from Responses
+
+Drop table Options
+
+--SP for displaying score
+Create proc ShowingScore
+@CandidateID int
+as
+Begin
+	Select Sum(Marks) from Responses where Candidate_ID = (Select max(Candidate_ID) from Responses)
+End
+
+
+Drop proc ShowingScore
+
+create table Test(
+	QuestionID int foreign key references Questions(Question_ID),
+	Question_Statement varchar(max),
+	TestQID int identity
+)
+
+create proc CreateTest
+@ID int
+as
+Begin
+	truncate table Test;
+	declare @iteration as int;
+	declare @randomID as int;
+	set @iteration = 1
+	while (@iteration <= 4)
+	Begin
+	set @randomID = Floor(RAND()*(2))
+	Set @ID = case when @randomID < 1 then 2*@iteration - 1 else 2*@iteration end
+	Insert into [dbo].[Test] values (@ID, (Select Question_Statement from Questions where Question_ID = @ID))
+	set @iteration = @iteration + 1
+	End
+End
+
+exec CreateTest '1'
+Select * from Test
+
+drop proc CreateTest
+
+declare @t as int;
+set @t = (select QuestionID from Test where QuestionID > 8)
+Select @t
+
+Select * from Options

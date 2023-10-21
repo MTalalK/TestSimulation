@@ -1,0 +1,33 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterPage.master.cs" Inherits="TestSimul.MasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/StyleSheet1.css" />
+    <script type="text/javascript" src="Scripts/TimeFunctions.js"></script>
+    <script type="text/javascript" src="Scripts/WebServiceCallBacks.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes" charset="utf-8">
+    <div class="container-flex backgroundimage" style="max-width:100%">
+        <div class="container TitleTest">
+            General Knowledge Test
+        </div>
+    </div>
+    <div id="Signoutdiv" style="display:block">
+        <a id="Signout" href="SigninSignup.aspx" style="width:5%;margin-left:90%;margin-right:10%;margin-top:1%;border:1px solid blue;display:inline-block;text-align:center">Signout</a>
+    </div>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form class="form-group w-100" id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>

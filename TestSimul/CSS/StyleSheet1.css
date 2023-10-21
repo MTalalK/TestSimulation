@@ -1,0 +1,150 @@
+﻿
+/*form{
+    border: 2px solid blue;
+    width: 40%;
+    text-wrap: normal;
+    text-align:left;
+    margin-left:auto;
+    margin-right: auto;
+    margin-bottom:auto;
+    margin-top:100px;
+}*/
+
+.backgroundimage {
+    background-image: url('../2069229.jpg');
+    height: 200px;
+    background-size: cover
+}
+
+.TitleTest {
+    font-size: 30px;
+    text-align: center;
+    padding-top: 60px;
+    color: aqua;
+    animation-name: example;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+}
+
+/*For General Knowledge Test title*/
+@keyframes example {
+    0% {
+        color: aqua;
+    }
+
+    25% {
+        color: aquamarine;
+    }
+
+    50% {
+        color: cornsilk;
+    }
+
+    75% {
+        color: plum;
+    }
+
+    100% {
+        color:cyan
+    }
+}
+
+/*buttons css*/
+.disableenablecss:disabled{
+    cursor:not-allowed
+}
+
+.disableenablecss:enabled:hover {
+    transition: 0.5s;
+    border: 1px solid;
+    animation-name: forbutton;
+    animation-duration: 1s;
+    animation-iteration-count: infinite
+}
+
+
+@keyframes forbutton {
+    0% {
+        border-color: orangered;
+    }
+
+    50% {
+        border-color: blue;
+    }
+
+    100% {
+        border-color: orangered;
+    }
+}
+
+.gridlogin{
+    display:grid;
+    margin-inline:30%;
+    gap:5%;
+    padding-top:2%;
+    grid-template-columns:1fr 1fr;
+}
+
+@keyframes forlogindivs {
+    0% {
+        border-left-color: aqua;
+        border-bottom-color: royalblue;
+    }
+
+    33% {
+        border-top-color: aqua;
+        border-left-color: royalblue;
+    }
+
+    66% {
+        border-right-color: aqua;
+        border-top-color: royalblue;
+    }
+
+    99% {
+        border-bottom-color: aqua;
+        border-right-color: royalblue;
+    }
+}
+
+.Logindivs{
+    border:solid;
+    border-color:royalblue;
+    padding-inline:15%;
+    padding-bottom:5%;
+}
+
+    .Logindivs:hover {
+        animation-name: forlogindivs;
+        animation-duration: 1s;
+        animation-iteration-count: infinite
+    }
+
+/*For Tick Animation*/
+
+.circ {
+    color:blue;
+    opacity: 0;
+    stroke-dasharray: 130;
+    stroke-dashoffset: 130;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    -ms-transition: all 1s;
+    -o-transition: all 1s;
+    transition: all 1s;
+}
+
+.tick {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    -webkit-transition: stroke-dashoffset 1s 0.5s ease-out;
+    -moz-transition: stroke-dashoffset 1s 0.5s ease-out;
+    -ms-transition: stroke-dashoffset 1s 0.5s ease-out;
+    -o-transition: stroke-dashoffset 1s 0.5s ease-out;
+    transition: stroke-dashoffset 1s 0.5s ease-out;
+}
+
+.drawn + svg .path {
+    opacity: 1;
+    stroke-dashoffset: 0;
+}
